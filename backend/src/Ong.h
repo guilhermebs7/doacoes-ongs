@@ -25,9 +25,11 @@ public:
     string getNomeDaOng() const;
 
     // Métodos principais
-    void buscarItem(const vector<Item*>& itensDisponiveis); // A definir depois
-    void solicitarItem(Item* item); // A definir depois
-    void listarRecebidos() const; // A definir depois
+    void buscarItem(const vector<Item*>& itensDisponiveis); 
+    void solicitarItem(Item* item); 
+    void listarRecebidos() const; 
+    
+    void exibirPerfil() const override;
 
     // Validação
     static bool validarCnpj(const string& cnpj);

@@ -1,4 +1,3 @@
-// Ong.cpp
 #include "Ong.h"
 #include <iostream>
 #include <regex>
@@ -42,12 +41,38 @@ bool Ong::validarCnpj(const string& cnpj) {
 
 // Método para buscar itens disponíveis (filtrar por categoria/cidade etc)
 void Ong::buscarItem(const vector<Item*>& itensDisponiveis) {
-    // Lógica será implementada em conjunto com a classe Item
-    cout << "[buscarItem ainda não implementado]" << endl;
+    cout << "Itens disponíveis para solicitação:\n";
+    bool encontrou = false;
+
+    for (const auto& item : itensDisponiveis) {
+        if (item->getStatus() == Status::DISPONIVEL) {
+            item->exibirItem();
+            cout << "------------------" << endl;
+            encontrou = true;
+        }
+    }
+
+    if (!encontrou) {
+        cout << "Nenhum item disponível no momento.\n";
+    }
 }
 
 // Método para solicitar/reservar um item
 void Ong::solicitarItem(Item* item) {
-    // Lógica será implementada com base em como os status dos itens forem definidos
-    cout << "[solicitarItem ainda não implementado]" << endl;
+    if (item->getStatus() == Status::DISPONIVEL) {
+        item->alterarStatus(Status::RESERVADO);
+        historicoItensRecebidos.push_back(item);
+        cout << "Item '" << item->getNome() << "' reservado com sucesso pela ONG '" << nomeDaOng << "'.\n";
+    } else {
+        cout << "O item '" << item->getNome() << "' não está disponível para reserva.\n";
+    }
+}
+
+// Método herdado de Usuario - exibe os dados da ONG
+void Ong::exibirPerfil() const {
+    cout << "===== PERFIL DA ONG =====" << endl;
+    cout << "Nome do Responsável: " << nome << endl;
+    cout << "Email: " << email << endl;
+    cout << "Nome da ONG: " << nomeDaOng << endl;
+    cout << "CNPJ: " << cnpj << endl;
 }
