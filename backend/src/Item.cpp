@@ -3,9 +3,23 @@
 using namespace std;
 
 Item::Item(long id, const string& nome, const string& descricao,
-           const string& categoria, Doador* dono, const string& cidade)
-    : id(id), nome(nome), descricao(descricao), categoria(categoria),
-      status(Status::DISPONIVEL), dono(dono), cidade(cidade) {}
+           Categoria categoria, Doador* dono, const string& cidade)
+    : id(id), categoria(categoria), status(Status::DISPONIVEL), dono(dono) {
+
+    if (nome.empty()) {
+        throw invalid_argument("O nome do item não pode estar em branco.");
+    }
+    if (descricao.empty()) {
+        throw invalid_argument("A descrição do item não pode estar em branco.");
+    }
+    if (cidade.empty()) {
+        throw invalid_argument("A cidade do item não pode estar em branco.");
+    }
+
+    this->nome = nome;
+    this->descricao = descricao;
+    this->cidade = cidade;
+}
 
 long Item::getId() const { return id; }
 
@@ -30,7 +44,7 @@ void Item::exibirItem() const {
     cout << "ID: " << id
          << "\nNome: " << nome
          << "\nDescrição: " << descricao
-         << "\nCategoria: " << categoria
+         << "\nCategoria: " << categoriaParaString(categoria)
          << "\nStatus: " << statusParaString(status)
          << "\nCidade: " << cidade << "\n";
 }
@@ -41,5 +55,17 @@ string Item::statusParaString(Status s) const {
         case Status::RESERVADO: return "Reservado";
         case Status::ENTREGUE: return "Entregue";
         default: return "Desconhecido";
+    }
+}
+
+string Item::categoriaParaString(Categoria c) const {
+    switch (c) {
+        case Categoria::ALIMENTO: return "Alimento";
+        case Categoria::ROUPA: return "Roupa";
+        case Categoria::MOVEIS: return "Móveis";
+        case Categoria::ELETRODOMESTICOS: return "Eletrodomésticos";
+        case Categoria::HIGIENE_PESSOAL: return "Higiene Pessoal";
+        case Categoria::MATERIAIS_DIDATICOS: return "Materiais Didáticos";
+        default: return "Desconhecida";
     }
 }
