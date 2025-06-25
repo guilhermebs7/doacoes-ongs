@@ -3,17 +3,20 @@
 
 #include <vector>
 #include <string>
-//#include "Usuario.hpp"   // Base abstrata para Doador e ONG a ser definida por rodrigo
-//#include "Item.hpp"      // Classe dos itens a ser definida
+#include "Usuario.h"   // Base abstrata para Doador e ONG a ser definida por rodrigo
+#include "Item.h"
+#include "Doador.h"
+#include "Ong.h"
+
 
 class Sistema {
 private:
     
     static Sistema* instancia;
-    Sistema(); // Construtor privado
+    Sistema(); 
 
-    //std::vector<Usuario*> usuarios;       // Vetor polimórfico de usuários
-    //std::vector<Item*> itens;             // Vetor de ponteiros para itens
+    std::vector<Usuario*> usuarios;       // polimórfico de usuários
+    std::vector<Item*> itens;             // ponteiros para itens
 
 public:
    
