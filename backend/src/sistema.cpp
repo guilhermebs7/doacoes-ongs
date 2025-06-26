@@ -154,3 +154,28 @@ void Sistema::solicitarItem() {
 
     cout << "ONG ou item não encontrado.\n";
 }
+
+void Sistema::confirmarEntrega() {
+    long id;
+    cout << "ID do item a ser entregue: ";
+    cin >> id;
+
+    for (auto* item : itens) {
+        if (item->getId() == id && item->getStatus() == Status::RESERVADO) {
+            item->alterarStatus(Status::ENTREGUE);
+            cout << "Entrega confirmada para o item: " << item->getNome() << endl;
+            return;
+        }
+    }
+    cout << "Item não encontrado ou não reservado.\n";
+}
+
+void Sistema::salvarDados() {
+    cout << "[BONUS] Salvando dados... (não implementado)\n";
+    // Aqui entraria lógica para salvar usuários e itens em arquivos ou banco
+}
+
+void Sistema::carregarDados() {
+    cout << "[BONUS] Carregando dados... (não implementado)\n";
+    // Aqui entraria lógica para carregar dados de arquivos ou banco
+}
