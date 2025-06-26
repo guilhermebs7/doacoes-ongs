@@ -19,6 +19,7 @@ public:
                   const string& categoria, const string& cidade);
 
     void listarItensDoado() const;
+    const vector<Item*>& getDoadorItens() const { return itensDoado; }
 
     void exibirPerfil() const override;
 };

@@ -1,4 +1,7 @@
 #include "sistema.h"
+#include "Doador.h"
+#include "Ong.h"
+#include "Item.h"
 #include <iostream>    
 #include <typeinfo>    // p identificação de tipo em tempo de execução 
 #include <limits>      // p limites de tipos numéricos 
@@ -67,4 +70,87 @@ bool Sistema::login() {
     }
     cout << "Email ou senha inválidos.\n";
     return false;
+}
+
+void Sistema::doarItem() {
+    string email;
+    cout << "Email do doador: ";
+    cin >> email;
+
+    for (auto* u : usuarios) {
+        Doador* d = dynamic_cast<Doador*>(u);
+        if (d && d->getEmail() == email) {
+            cin.ignore();
+            long id;
+            string nomeItem, descricao, cidade;
+            int categoriaInt;
+
+            cout << "ID do item: "; cin >> id;
+            cin.ignore();
+            cout << "Nome do item: "; getline(cin, nomeItem);
+            cout << "Descrição: "; getline(cin, descricao);
+            cout << "Cidade: "; getline(cin, cidade);
+
+            cout << "Categoria (0:Alimento, 1:Roupa, 2:Móveis, 3:Eletrodomésticos, 4:Higiene, 5:Didáticos): ";
+            cin >> categoriaInt;
+
+            Categoria categoria = static_cast<Categoria>(categoriaInt);
+
+            // Convert Categoria enum to string
+            std::string categoriaStr;
+            switch (categoria) {
+                case Categoria::ALIMENTO: categoriaStr = "Alimento"; break;
+                case Categoria::ROUPA: categoriaStr = "Roupa"; break;
+                case Categoria::MOVEIS: categoriaStr = "Móveis"; break;
+                case Categoria::ELETRODOMESTICOS: categoriaStr = "Eletrodomésticos"; break;
+                case Categoria::HIGIENE_PESSOAL: categoriaStr = "Higiene"; break;
+                case Categoria::MATERIAIS_DIDATICOS: categoriaStr = "Didáticos"; break;
+                default: categoriaStr = "Desconhecido"; break;
+            }
+
+            d->doarItem(id, nomeItem, descricao, categoriaStr, cidade);
+            itens.push_back(d->getDoadorItens().back());
+            return;
+        }
+    }
+
+    cout << "Doador não encontrado.\n";
+}
+
+void Sistema::buscarItens() {
+    int categoriaInt;
+    string cidade;
+    cout << "Filtrar por cidade: "; cin.ignore(); getline(cin, cidade);
+    cout << "Filtrar por categoria (0-5): "; cin >> categoriaInt;
+    Categoria catFiltro = static_cast<Categoria>(categoriaInt);
+
+    for (const auto& item : itens) {
+        if (item->getStatus() == Status::DISPONIVEL &&
+            item->getCategoria() == catFiltro &&
+            item->getCidade() == cidade) {
+            item->exibirItem();
+            cout << "--------------------\n";
+        }
+    }
+}
+
+void Sistema::solicitarItem() {
+    long id;
+    string email;
+    cout << "Email da ONG: "; cin >> email;
+    cout << "ID do item desejado: "; cin >> id;
+
+    for (auto* u : usuarios) {
+        Ong* o = dynamic_cast<Ong*>(u);
+        if (o && o->getEmail() == email) {
+            for (auto* item : itens) {
+                if (item->getId() == id) {
+                    o->solicitarItem(item);
+                    return;
+                }
+            }
+        }
+    }
+
+    cout << "ONG ou item não encontrado.\n";
 }
