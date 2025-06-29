@@ -6,7 +6,36 @@
 
 using namespace std;
 
+//teste thiago
 int main() {
+    
+    Sistema* sistema = Sistema::getInstancia();
+
+    cout << "\n===== Testando Cadastro =====\n";
+    sistema->cadastrarUsuario(); // Doador
+    sistema->cadastrarUsuario(); // ONG
+
+    cout << "\n===== Testando Login =====\n";
+    sistema->login();
+
+    cout << "\n===== Testando Doação =====\n";
+    sistema->doarItem();
+
+    cout << "\n===== Testando Busca de Itens =====\n";
+    sistema->buscarItens();
+
+    cout << "\n===== Testando Solicitação de Item =====\n";
+    sistema->solicitarItem();
+
+    cout << "\n===== Testando Confirmação de Entrega =====\n";
+    sistema->confirmarEntrega();
+
+    return 0;
+}
+
+
+// teste de flávia
+/*int main() {
     // Criando instância única do sistema
     Sistema* sistema = Sistema::getInstancia();
 
@@ -50,4 +79,4 @@ int main() {
     delete ong1;
 
     return 0;
-}
+}*/

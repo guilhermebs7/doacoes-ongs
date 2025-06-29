@@ -1,5 +1,5 @@
-#ifndef SISTEMA_HPP
-#define SISTEMA_HPP
+#ifndef SISTEMA_H
+#define SISTEMA_H
 
 #include <vector>
 #include <string>
@@ -7,6 +7,8 @@
 #include "Item.h"
 #include "Doador.h"
 #include "Ong.h"
+#include <sqlite3.h> // Biblioteca SQLite para persistência de dados
+
 
 
 class Sistema {
@@ -17,10 +19,17 @@ private:
 
     std::vector<Usuario*> usuarios;       // polimórfico de usuários
     std::vector<Item*> itens;             // ponteiros para itens
+    sqlite3* db;
+   
+
 
 public:
    
     static Sistema* getInstancia();
+
+    void conectarBanco();     // Conecta ao banco PostgreSQL
+    void desconectarBanco();  // Encerra a conexão
+
 
     // CRUD
     void cadastrarUsuario();     // Cadastra doador ou ONG
