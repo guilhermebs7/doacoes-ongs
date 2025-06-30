@@ -12,6 +12,11 @@ const Header2: React.FC = () => {
 
   const estados = ['PE', 'SP', 'RJ'];
 
+  function handleClick(opcao: string) {
+    console.log(`Clique em: ${opcao}`);
+    // futuramente: router.push('/alguma-rota')
+  }
+
   return (
     <header className="w-full flex items-center justify-between px-12 py-6 border-b border-gray-300 bg-white text-xl">
       
@@ -28,7 +33,7 @@ const Header2: React.FC = () => {
       </div>
 
       {/* Search */}
-      <div className="flex items-center border border-gray-300 rounded-xl w-[600px] h-14 bg-gray-50 shadow-sm relative">
+      <div className="flex items-center border border-gray-300 rounded-xl w-[650px] h-14 bg-gray-50 shadow-sm relative">
         <input
           type="text"
           placeholder='Buscar “Roupas”...'
@@ -75,22 +80,34 @@ const Header2: React.FC = () => {
 
       {/* Menu */}
       <nav className="flex items-center gap-10 text-xl text-gray-800 font-semibold">
-        <div className="flex items-center gap-2 cursor-pointer hover:text-black">
+        <div
+          onClick={() => handleClick('Meus Anúncios')}
+          className="flex items-center gap-2 cursor-pointer hover:text-black"
+        >
           <Grid size={26} />
           <span>Meus Anúncios</span>
         </div>
-        <div className="flex items-center gap-2 cursor-pointer hover:text-black">
+        <div
+          onClick={() => handleClick('Chats')}
+          className="flex items-center gap-2 cursor-pointer hover:text-black"
+        >
           <MessageCircle size={26} />
           <span>Chats</span>
         </div>
-        <div className="flex items-center gap-2 cursor-pointer hover:text-black">
+        <div
+          onClick={() => handleClick('Notificações')}
+          className="flex items-center gap-2 cursor-pointer hover:text-black"
+        >
           <Bell size={26} />
           <span>Notificações</span>
         </div>
       </nav>
 
       {/* Ícone de Usuário */}
-      <div className="ml-8 mr-16 cursor-pointer hover:text-black">
+      <div
+        onClick={() => handleClick('Perfil do Usuário')}
+        className="ml-8 mr-16 cursor-pointer hover:text-black"
+      >
         <User size={45} />
       </div>
     </header>
