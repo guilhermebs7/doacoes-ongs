@@ -6,8 +6,8 @@ import Header2 from '@/components/Header2';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const categorias = [
-  'Celulares', 'Brinquedos', 'Decoração', 'Eletro', 'Móveis',
-  'Esportes', 'Hobbies', 'Agro', 'Roupas', 'Infantil', 'Mais'
+  'Calçados', 'Higiene', 'Decoração', 'Eletro', 'Móveis',
+  'Esportes', 'Hobbies', 'Livros', 'Roupas', 'Infantil', 'Mais'
 ];
 
 const categoriasComImagem = ['Móveis', 'Roupas', 'Calçados'];
