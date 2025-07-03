@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Bell, Grid, MessageCircle, MapPin, Search, User } from 'lucide-react';
+import { Grid, MapPin, Plus, Search, User } from 'lucide-react';
 
 const Header2: React.FC = () => {
   const [showLocation, setShowLocation] = useState(false);
@@ -14,30 +14,29 @@ const Header2: React.FC = () => {
 
   function handleClick(opcao: string) {
     console.log(`Clique em: ${opcao}`);
-    // futuramente: router.push('/alguma-rota')
   }
 
   return (
-    <header className="w-full flex items-center justify-between px-12 py-6 border-b border-gray-300 bg-white text-xl">
+    <header className="w-full flex items-center justify-center px-6 py-4 border-b border-gray-300 bg-white text-xl gap-20">
       
       {/* Logo */}
-      <div className="flex items-center ml-10">
+      <div className="flex items-center">
         <Image
           src="/assets/logo.png"
           alt="Logo Doe Fácil"
-          width={100}
-          height={100}
-          className="h-24 w-auto"
+          width={90}
+          height={90}
+          className="h-20 w-auto"
           priority
         />
       </div>
 
       {/* Search */}
-      <div className="flex items-center border border-gray-300 rounded-xl w-[650px] h-14 bg-gray-50 shadow-sm relative">
+      <div className="flex items-center border border-gray-300 rounded-xl w-[800px] h-14 bg-gray-50 shadow-sm relative">
         <input
           type="text"
           placeholder='Buscar “Roupas”...'
-          className="px-6 py-3 text-xl w-full bg-transparent focus:outline-none placeholder:text-gray-500"
+          className="px-6 py-4 text-xl w-full bg-transparent focus:outline-none placeholder:text-gray-500"
         />
 
         {/* Localização com dropdown */}
@@ -79,36 +78,30 @@ const Header2: React.FC = () => {
       </div>
 
       {/* Menu */}
-      <nav className="flex items-center gap-10 text-xl text-gray-800 font-semibold">
+      <nav className="flex items-center gap-8 text-lg text-gray-800 font-semibold">
         <div
           onClick={() => handleClick('Meus Anúncios')}
           className="flex items-center gap-2 cursor-pointer hover:text-black"
         >
-          <Grid size={26} />
+          <Grid size={24} />
           <span>Meus Anúncios</span>
         </div>
+
         <div
-          onClick={() => handleClick('Chats')}
-          className="flex items-center gap-2 cursor-pointer hover:text-black"
+          onClick={() => handleClick('Adicionar Anúncio')}
+          className="flex items-center gap-2 cursor-pointer text-black hover:text-black transition"
         >
-          <MessageCircle size={26} />
-          <span>Chats</span>
-        </div>
-        <div
-          onClick={() => handleClick('Notificações')}
-          className="flex items-center gap-2 cursor-pointer hover:text-black"
-        >
-          <Bell size={26} />
-          <span>Notificações</span>
+          <Plus size={24} />
+          <span>Adicionar Anúncio</span>
         </div>
       </nav>
 
       {/* Ícone de Usuário */}
       <div
         onClick={() => handleClick('Perfil do Usuário')}
-        className="ml-8 mr-16 cursor-pointer hover:text-black"
+        className="cursor-pointer hover:text-black"
       >
-        <User size={45} />
+        <User size={42} />
       </div>
     </header>
   );
