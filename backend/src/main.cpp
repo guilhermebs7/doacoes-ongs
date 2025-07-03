@@ -6,8 +6,47 @@
 
 using namespace std;
 
-//teste thiago
+//teste thiago 2
+
+
+void exibirMenu() {
+    cout << "\n=== MENU PRINCIPAL ===\n"
+         << "1  Cadastrar usuário\n"
+         << "2  Login\n"
+         << "3  Doar item (doador)\n"
+         << "4  Buscar itens disponíveis\n"
+         << "5  Solicitar item (ONG)\n"
+         << "6  Confirmar entrega\n"
+         << "7  Listar usuários no banco\n"
+         << "8  Listar todos os itens\n"
+         << "0  Sair\n"
+         << "Escolha: ";
+}
+
 int main() {
+    Sistema* sis = Sistema::getInstancia();
+    int opc = -1;
+
+    while (true) {
+        exibirMenu();
+        cin >> opc;
+        switch (opc) {
+            case 1: sis->cadastrarUsuario(); break;
+            case 2: sis->login();            break;
+            case 3: sis->doarItem();         break;
+            case 4: sis->buscarItens();      break;
+            case 5: sis->solicitarItem();    break;
+            case 6: sis->confirmarEntrega(); break;
+            case 7: sis->listarUsuariosSalvos(); break;
+            case 8: sis->listarItensSalvos();    break;
+            case 0: cout << "Saindo...\n"; return 0;
+            default: cout << "Opcao invalida.\n";
+        }
+    }
+}
+
+//teste thiago1
+/*int main() {
     
     Sistema* sistema = Sistema::getInstancia();
 
@@ -31,7 +70,7 @@ int main() {
     sistema->confirmarEntrega();
 
     return 0;
-}
+}*/
 
 
 // teste de flávia

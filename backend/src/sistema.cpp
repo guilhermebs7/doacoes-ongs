@@ -2,33 +2,30 @@
 #include "Doador.h"
 #include "Ong.h"
 #include "Item.h"
-#include <iostream> 
+#include <iostream>
 #include <sstream>
-#include <stdexcept>   
-#include <typeinfo>    // p identificação de tipo em tempo de execução 
-#include <limits>      // p limites de tipos numéricos 
+#include <stdexcept>
+#include <typeinfo>
+#include <limits>
 
 using namespace std;
 
-
-// ponteiro estático da classe Sistema como nullptr
+// ponteiro estático
 Sistema* Sistema::instancia = nullptr;
 
-// exibe uma msg no console quando o sistema é instanciado
 Sistema::Sistema() {
-    std::cout << "Sistema iniciado.\n";
+    cout << "Sistema iniciado.\n";
     conectarBanco();
 }
 
-// método estático que retorna a instância única do sistema Singleton
 Sistema* Sistema::getInstancia() {
-    if (instancia == nullptr)         // se existe alguma instância
-        instancia = new Sistema();    // se não, cria uma nova
-        return instancia;
-    }
+    if (instancia == nullptr)
+        instancia = new Sistema();
+    return instancia;
+}
 
 void Sistema::conectarBanco() {
-    int rc = sqlite3_open("doacoes.db", &db);
+    int rc = sqlite3_open("doacoes_demo.db", &db);
     if (rc) {
         cerr << "Erro ao abrir banco: " << sqlite3_errmsg(db) << endl;
         db = nullptr;
@@ -44,7 +41,7 @@ void Sistema::desconectarBanco() {
     }
 }
 
-void Sistema::cadastrarUsuario(){
+void Sistema::cadastrarUsuario() {
     int tipo;
     cout << "Cadastrar: 1 - Doador | 2 - ONG: ";
     cin >> tipo;
@@ -55,41 +52,31 @@ void Sistema::cadastrarUsuario(){
     cout << "Email: "; getline(cin, email);
     cout << "Senha: "; getline(cin, senha);
 
-    char* errMsg = nullptr; // ponteiro para armazenar mensagens de erro do SQLite
+    char* errMsg = nullptr;
     string sql;
 
     if (tipo == 1) {
-
         string cpf;
         cout << "CPF: "; getline(cin, cpf);
         usuarios.push_back(new Doador(nome, email, senha));
-        cout << "Doador cadastrado com sucesso.\n";
         sql = "INSERT INTO doadores (nome, email, senha, cpf) VALUES ('" + nome + "', '" + email + "', '" + senha + "', '" + cpf + "');";
-
-    }else if (tipo == 2){
-
+    } else if (tipo == 2) {
         string nomeOng, cnpj;
         cout << "Nome da ONG: "; getline(cin, nomeOng);
         cout << "CNPJ (14 dígitos): "; getline(cin, cnpj);
-
         if (Ong::validarCnpj(cnpj)) {
-
             usuarios.push_back(new Ong(nome, email, senha, nomeOng, cnpj));
-            cout << "ONG cadastrada com sucesso.\n";
             sql = "INSERT INTO ongs (nome, email, senha, cnpj, nome_ong) VALUES ('" + nome + "', '" + email + "', '" + senha + "', '" + cnpj + "', '" + nomeOng + "');";
-
         } else {
-
             cout << "CNPJ inválido.\n";
+            return;
         }
-
-    }else{
-
+    } else {
         cout << "Opção inválida.\n";
-
+        return;
     }
-    // Executa a query SQL para inserir o usuário no banco de dados
-        if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+
+    if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
         cerr << "Erro ao inserir usuário: " << errMsg << endl;
         sqlite3_free(errMsg);
     } else {
@@ -105,13 +92,12 @@ bool Sistema::login() {
     string sql = "SELECT nome FROM doadores WHERE email='" + email + "' AND senha='" + senha + "';";
     sqlite3_stmt* stmt;
 
-    // Prepara a consulta SQL para verificar o login do doador
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK && sqlite3_step(stmt) == SQLITE_ROW) {
         cout << "Login realizado como doador: " << sqlite3_column_text(stmt, 0) << "\n";
         sqlite3_finalize(stmt);
         return true;
     }
-    // Se não encontrou doador, tenta verificar se é uma ONG
+
     sql = "SELECT nome FROM ongs WHERE email='" + email + "' AND senha='" + senha + "';";
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK && sqlite3_step(stmt) == SQLITE_ROW) {
         cout << "Login realizado como ONG: " << sqlite3_column_text(stmt, 0) << "\n";
@@ -124,13 +110,11 @@ bool Sistema::login() {
     return false;
 }
 
-
 void Sistema::doarItem() {
     string email;
     cout << "Email do doador: ";
     cin >> email;
 
-    // Procura o doador pelo email
     for (auto* u : usuarios) {
         Doador* d = dynamic_cast<Doador*>(u);
         if (d && d->getEmail() == email) {
@@ -144,33 +128,25 @@ void Sistema::doarItem() {
             cout << "Nome do item: "; getline(cin, nomeItem);
             cout << "Descrição: "; getline(cin, descricao);
             cout << "Cidade: "; getline(cin, cidade);
-
             cout << "Categoria (0:Alimento, 1:Roupa, 2:Móveis, 3:Eletrodomésticos, 4:Higiene, 5:Didáticos): ";
             cin >> categoriaInt;
 
-            Categoria categoria = static_cast<Categoria>(categoriaInt);
+            string categorias[] = {"ALIMENTO", "ROUPA", "MOVEIS", "ELETRODOMESTICOS", "HIGIENE_PESSOAL", "MATERIAIS_DIDATICOS"};
+            string categoriaStr = categorias[categoriaInt];
 
-            // Convert Categoria enum to string
-            std::string categoriaStr;
-
-            string categorias[] = {
-                "ALIMENTO", "ROUPA", "MOVEIS", "ELETRODOMESTICOS", "HIGIENE_PESSOAL", "MATERIAIS_DIDATICOS"
-            };
-
-            categoriaStr = categorias[categoriaInt];
             d->doarItem(id, nomeItem, descricao, categoriaStr, cidade);
             itens.push_back(d->getDoadorItens().back());
 
             string sql = "INSERT INTO itens (nome, descricao, categoria, cidade, dono_email, status) VALUES ('" +
-            nomeItem + "', '" + descricao + "', '" + categoriaStr + "', '" + cidade + "', '" + email + "', 'DISPONIVEL');";
-           
+                         nomeItem + "', '" + descricao + "', '" + categoriaStr + "', '" + cidade + "', '" + email + "', 'DISPONIVEL');";
+
             char* errMsg = nullptr;
             if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
                 cerr << "Erro ao salvar item: " << errMsg << endl;
                 sqlite3_free(errMsg);
             } else {
                 cout << "Item doado e salvo no banco.\n";
-            }            
+            }
             return;
         }
     }
@@ -185,7 +161,7 @@ void Sistema::buscarItens() {
     cout << "Filtrar por cidade: "; cin.ignore(); getline(cin, cidade);
     cout << "Filtrar por categoria (0-5): "; cin >> categoriaInt;
 
-    string categorias[] = {"ALIMENTO", "ROUPA", "MOVEIS", "ELETRODOMESTICOS", "HIGIENE_PESSOAL", "MATERIAIS_DIDATICOS" };
+    string categorias[] = {"ALIMENTO", "ROUPA", "MOVEIS", "ELETRODOMESTICOS", "HIGIENE_PESSOAL", "MATERIAIS_DIDATICOS"};
     string categoria = categorias[categoriaInt];
 
     string sql = "SELECT id, nome, descricao, categoria, cidade FROM itens WHERE status='DISPONIVEL' AND categoria='" + categoria + "' AND cidade='" + cidade + "';";
@@ -237,11 +213,46 @@ void Sistema::confirmarEntrega() {
     }
 }
 
-void Sistema::salvarDados() {
-    cout << "[Dados persistidos automaticamente via SQLite]\n";
+// ========== NOVOS MÉTODOS AUXILIARES DO MENU ==========
+void Sistema::listarUsuariosSalvos() {
+    cout << "\n--- DOADORES ---\n";
+    sqlite3_stmt* stmt;
+    string sql = "SELECT nome, email, cpf FROM doadores;";
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            cout << "Nome: " << sqlite3_column_text(stmt, 0)
+                 << " | Email: " << sqlite3_column_text(stmt, 1)
+                 << " | CPF: " << sqlite3_column_text(stmt, 2) << "\n";
+        }
+    }
+    sqlite3_finalize(stmt);
+
+    cout << "\n--- ONGs ---\n";
+    sql = "SELECT nome, email, cnpj, nome_ong FROM ongs;";
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            cout << "Nome Resp: " << sqlite3_column_text(stmt, 0)
+                 << " | Email: " << sqlite3_column_text(stmt, 1)
+                 << " | CNPJ: " << sqlite3_column_text(stmt, 2)
+                 << " | ONG: " << sqlite3_column_text(stmt, 3) << "\n";
+        }
+    }
+    sqlite3_finalize(stmt);
 }
 
-void Sistema::carregarDados() {
-    cout << "[Use SELECT no SQLite para visualizar dados]\n";
-
+void Sistema::listarItensSalvos() {
+    cout << "\n--- ITENS CADASTRADOS ---\n";
+    string sql = "SELECT id, nome, descricao, categoria, cidade, status FROM itens;";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            cout << "ID: " << sqlite3_column_int(stmt, 0)
+                 << " | Nome: " << sqlite3_column_text(stmt, 1)
+                 << " | Desc: " << sqlite3_column_text(stmt, 2)
+                 << " | Categoria: " << sqlite3_column_text(stmt, 3)
+                 << " | Cidade: " << sqlite3_column_text(stmt, 4)
+                 << " | Status: " << sqlite3_column_text(stmt, 5) << "\n";
+        }
+    }
+    sqlite3_finalize(stmt);
 }

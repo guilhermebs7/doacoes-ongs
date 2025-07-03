@@ -38,7 +38,8 @@ public:
     void doarItem();             // Interação: doador adiciona item
     void solicitarItem();        // ONG solicita item
     void confirmarEntrega();     // Confirmação de entrega
-
+    void listarUsuariosSalvos();   // mostra doadores + ONGs gravados no banco
+    void listarItensSalvos();      // mostra todos os itens e seus status
     // Persistência (bônus)
     void salvarDados();          // Salva dados em arquivo
     void carregarDados();        // Carrega dados de arquivo
