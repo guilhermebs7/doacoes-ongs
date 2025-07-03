@@ -15,18 +15,20 @@
 
 using namespace std;
 
-// Função para limpar a tela
+// Limpa a tela
 void limparTela() {
     system(CLEAR_SCREEN);
 }
 
-// Função para pausar a execução até o usuário pressionar Enter
+// Aguarda Enter
 void pausar() {
-    cout << "\nPressione Enter para continuar...";
+    cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "\nPressione Enter para continuar...";
+    cin.get();
 }
 
-// Função para validar entrada numérica
+// Valida número
 bool validarEntradaNumerica(int& valor, const string& mensagem) {
     cout << mensagem;
     while (!(cin >> valor)) {
@@ -38,7 +40,7 @@ bool validarEntradaNumerica(int& valor, const string& mensagem) {
     return true;
 }
 
-// Função para exibir o menu principal com título e descrição
+// Menu principal
 void exibirMenuPrincipal() {
     limparTela();
     cout << "==============================================================\n";
@@ -49,16 +51,15 @@ void exibirMenuPrincipal() {
     cout << "1. Cadastrar usuario        (Crie uma conta como Doador ou ONG)\n";
     cout << "2. Login                   (Acesse sua conta para gerenciar doacoes)\n";
     cout << "3. Doar item               (Doe itens como alimentos, roupas, etc.)\n";
-    cout << "4. Buscar itens disponiveis (Encontre itens para sua ONG)\n";
-    cout << "5. Solicitar item          (Reserve um item para sua ONG)\n";
-    cout << "6. Confirmar entrega        (Confirme a entrega de um item reservado)\n";
-    cout << "7. Listar usuarios         (Veja todos os usuarios cadastrados)\n";
-    cout << "8. Listar itens            (Veja todos os itens no sistema)\n";
+    cout << "4. Solicitar item          (Reserve um item para sua ONG)\n";
+    cout << "5. Confirmar entrega        (Confirme a entrega de um item reservado)\n";
+    cout << "6. Listar usuarios         (Veja todos os usuarios cadastrados)\n";
+    cout << "7. Listar itens            (Veja todos os itens no sistema)\n";
     cout << "0. Sair                    (Encerre o programa)\n";
-    cout << "Escolha uma opção: ";
+    cout << "Escolha uma opcao: ";
 }
 
-// Função para exibir submenu de cadastro
+// Submenu de cadastro
 void exibirSubmenuCadastro() {
     limparTela();
     cout << "==============================================================\n";
@@ -81,20 +82,18 @@ int main() {
 
         switch (opc) {
             case 1: {
-                // Submenu para cadastro
                 int tipoUsuario;
                 exibirSubmenuCadastro();
                 if (!validarEntradaNumerica(tipoUsuario, "")) continue;
 
                 if (tipoUsuario == 1 || tipoUsuario == 2) {
-                    sis->cadastrarUsuario();
-                    pausar();
+                    sis->cadastrarUsuario(tipoUsuario);
                 } else if (tipoUsuario == 0) {
-                    continue; // Volta ao menu principal
+                    continue;
                 } else {
                     cout << "Opção invalida. Tente novamente.\n";
-                    pausar();
                 }
+                pausar();
                 break;
             }
             case 2: {
@@ -112,26 +111,21 @@ int main() {
                 break;
             }
             case 4: {
-                sis->buscarItens();
-                pausar();
-                break;
-            }
-            case 5: {
                 sis->solicitarItem();
                 pausar();
                 break;
             }
-            case 6: {
+            case 5: {
                 sis->confirmarEntrega();
                 pausar();
                 break;
             }
-            case 7: {
+            case 6: {
                 sis->listarUsuariosSalvos();
                 pausar();
                 break;
             }
-            case 8: {
+            case 7: {
                 sis->listarItensSalvos();
                 pausar();
                 break;

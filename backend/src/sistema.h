@@ -30,9 +30,10 @@ public:
     void conectarBanco();     // Conecta ao banco PostgreSQL
     void desconectarBanco();  // Encerra a conexão
 
+    void cadastrarUsuario();
 
     // CRUD
-    void cadastrarUsuario();     // Cadastra doador ou ONG
+    void cadastrarUsuario(int tipo);     // Cadastra doador ou ONG
     bool login();                // Autenticação de usuário
     void buscarItens();          // Busca com filtros
     void doarItem();             // Interação: doador adiciona item

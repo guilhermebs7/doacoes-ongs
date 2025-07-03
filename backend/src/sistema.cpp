@@ -41,12 +41,7 @@ void Sistema::desconectarBanco() {
     }
 }
 
-void Sistema::cadastrarUsuario() {
-    int tipo;
-    cout << "Cadastrar: 1 - Doador | 2 - ONG: ";
-    cin >> tipo;
-    cin.ignore();
-
+void Sistema::cadastrarUsuario(int tipo) {
     string nome, email, senha;
     cout << "Nome: "; getline(cin, nome);
     cout << "Email: "; getline(cin, email);
@@ -63,26 +58,27 @@ void Sistema::cadastrarUsuario() {
     } else if (tipo == 2) {
         string nomeOng, cnpj;
         cout << "Nome da ONG: "; getline(cin, nomeOng);
-        cout << "CNPJ (14 dígitos): "; getline(cin, cnpj);
+        cout << "CNPJ (14 digitos): "; getline(cin, cnpj);
         if (Ong::validarCnpj(cnpj)) {
             usuarios.push_back(new Ong(nome, email, senha, nomeOng, cnpj));
             sql = "INSERT INTO ongs (nome, email, senha, cnpj, nome_ong) VALUES ('" + nome + "', '" + email + "', '" + senha + "', '" + cnpj + "', '" + nomeOng + "');";
         } else {
-            cout << "CNPJ inválido.\n";
+            cout << "CNPJ invalido.\n";
             return;
         }
     } else {
-        cout << "Opção inválida.\n";
+        cout << "Opção invalida.\n";
         return;
     }
 
     if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
-        cerr << "Erro ao inserir usuário: " << errMsg << endl;
+        cerr << "Erro ao inserir usuario: " << errMsg << endl;
         sqlite3_free(errMsg);
     } else {
-        cout << "Usuário salvo no banco com sucesso!\n";
+        cout << "Usuario salvo no banco com sucesso!\n";
     }
 }
+
 
 bool Sistema::login() {
     string email, senha;
@@ -105,7 +101,7 @@ bool Sistema::login() {
         return true;
     }
 
-    cout << "Email ou senha inválidos.\n";
+    cout << "Email ou senha invalidos.\n";
     sqlite3_finalize(stmt);
     return false;
 }
@@ -126,9 +122,9 @@ void Sistema::doarItem() {
             cout << "ID do item: "; cin >> id;
             cin.ignore();
             cout << "Nome do item: "; getline(cin, nomeItem);
-            cout << "Descrição: "; getline(cin, descricao);
+            cout << "Descricao: "; getline(cin, descricao);
             cout << "Cidade: "; getline(cin, cidade);
-            cout << "Categoria (0:Alimento, 1:Roupa, 2:Móveis, 3:Eletrodomésticos, 4:Higiene, 5:Didáticos): ";
+            cout << "Categoria (0:Alimento, 1:Roupa, 2:Moveis, 3:Eletrodomesticos, 4:Higiene, 5:Didaticos): ";
             cin >> categoriaInt;
 
             string categorias[] = {"ALIMENTO", "ROUPA", "MOVEIS", "ELETRODOMESTICOS", "HIGIENE_PESSOAL", "MATERIAIS_DIDATICOS"};
@@ -151,34 +147,10 @@ void Sistema::doarItem() {
         }
     }
 
-    cout << "Doador não encontrado.\n";
+    cout << "Doador nao encontrado.\n";
 }
 
-void Sistema::buscarItens() {
-    int categoriaInt;
-    string cidade;
 
-    cout << "Filtrar por cidade: "; cin.ignore(); getline(cin, cidade);
-    cout << "Filtrar por categoria (0-5): "; cin >> categoriaInt;
-
-    string categorias[] = {"ALIMENTO", "ROUPA", "MOVEIS", "ELETRODOMESTICOS", "HIGIENE_PESSOAL", "MATERIAIS_DIDATICOS"};
-    string categoria = categorias[categoriaInt];
-
-    string sql = "SELECT id, nome, descricao, categoria, cidade FROM itens WHERE status='DISPONIVEL' AND categoria='" + categoria + "' AND cidade='" + cidade + "';";
-    sqlite3_stmt* stmt;
-
-    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-            cout << "ID: " << sqlite3_column_int(stmt, 0) << "\n"
-                 << "Nome: " << sqlite3_column_text(stmt, 1) << "\n"
-                 << "Descrição: " << sqlite3_column_text(stmt, 2) << "\n"
-                 << "Categoria: " << sqlite3_column_text(stmt, 3) << "\n"
-                 << "Cidade: " << sqlite3_column_text(stmt, 4) << "\n"
-                 << "-----------------------------\n";
-        }
-    }
-    sqlite3_finalize(stmt);
-}
 
 void Sistema::solicitarItem() {
     long id;
