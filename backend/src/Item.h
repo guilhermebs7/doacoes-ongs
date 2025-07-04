@@ -5,9 +5,9 @@
 #include <stdexcept>
 using namespace std;
 
-enum class Status { DISPONIVEL, RESERVADO, ENTREGUE };
+enum class Status { DISPONIVEL, RESERVADO, ENTREGUE };     // enumeração que define os possíveis status de um item
 
-enum class Categoria {
+enum class Categoria {                                     // define as categorias possíveis de um item
     ALIMENTO,
     ROUPA,
     MOVEIS,
@@ -16,9 +16,9 @@ enum class Categoria {
     MATERIAIS_DIDATICOS
 };
 
-class Doador;
+class Doador;                      //declaração antecipada da classe Doador 
 
-class Item {
+class Item {                     // declaração da classe item 
 private:
     long id;
     string nome;
@@ -28,11 +28,11 @@ private:
     Doador* dono;
     string cidade;
 
-public:
+public:                                           //  construtor da classe Item
     Item(long id, const string& nome, const string& descricao,
          Categoria categoria, Doador* dono, const string& cidade);
 
-    long getId() const;
+    long getId() const;                             //retorna o id 
     string getNome() const;
     Categoria getCategoria() const { return categoria; }
     string getCidade() const { return cidade; }
