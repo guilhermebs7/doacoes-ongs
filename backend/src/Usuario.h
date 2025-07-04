@@ -5,14 +5,15 @@
 
 class Usuario {
 protected:
-    std::string nome;
-    std::string email;
-    std::string senha;
+    std::string nome;   // Nome do usuário
+    std::string email;  // Email do usuário
+    std::string senha;  // Senha do usuário
 
 public:
     Usuario(const std::string& nome, const std::string& email, const std::string& senha);
     virtual ~Usuario() {}
 
+    // Métodos getters e setters
     std::string getNome() const;
     void setNome(const std::string& nome);
 
