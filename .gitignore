@@ -1,10 +1,7 @@
-*.o
-*.exe
 *.out
 *.obj
 *.log
 *.user
 *.pro.user
 *.txt~
-*.db
 build/
