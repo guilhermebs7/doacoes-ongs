@@ -136,13 +136,8 @@ DoeFácil2.exe
 
 
 🎓 Créditos e Autoria
-Nome
-GitHub
-Guilherme Barbosa
-guilhermebs7
-Flavia Vitória
-Flavitche
-Thiago Bernardo
-codebyThiagoA
-Rodrigo Neves
-rodrigoadn0
+Nome ; GitHub
+Guilherme Barbosa <guilhermebs7>
+Flavia Vitória <Flavitche>
+Thiago Bernardo <codebyThiagoA>
+Rodrigo Neves <rodrigoadn0>
