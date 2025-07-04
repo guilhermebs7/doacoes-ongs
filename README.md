@@ -113,8 +113,6 @@ git clone https://github.com/guilhermebs7/doacoes-ongs.git
 
 Navegue até a pasta do projeto:
 
-
-CopiarEditar
 cd doacoes-ongs
 
 Compile o projeto:
