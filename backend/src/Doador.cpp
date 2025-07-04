@@ -15,10 +15,10 @@ Categoria stringParaCategoria(const std::string& str) {
     else throw invalid_argument("Categoria inválida");
 }
 
-Doador::Doador(const string& nome, const string& email, const string& senha)
+Doador::Doador(const string& nome, const string& email, const string& senha)          // construtor da classe Doador
     : Usuario(nome, email, senha) {}
 
-void Doador::doarItem(long id, const string& nomeItem, const string& descricao,
+void Doador::doarItem(long id, const string& nomeItem, const string& descricao,     // método que permite o doador cadastrar um novo item doado
                       const string& categoriaStr, const string& cidade) {
     Categoria categoria = stringParaCategoria(categoriaStr);
     Item* novo = new Item(id, nomeItem, descricao, categoria, this, cidade);
@@ -26,7 +26,7 @@ void Doador::doarItem(long id, const string& nomeItem, const string& descricao,
     cout << "Item '" << nomeItem << "' doado com sucesso!\n";
 }
 
-void Doador::listarItensDoado() const {
+void Doador::listarItensDoado() const {                              // método que lista todos os itens doados por este doador
     cout << "Itens doados por " << nome << ":\n";
 
     if (itensDoado.empty()) {
@@ -34,13 +34,13 @@ void Doador::listarItensDoado() const {
         return;
     }
 
-    for (const auto& item : itensDoado) {
+    for (const auto& item : itensDoado) {                   // percorre todos os itens doados e exibe suas informações
         item->exibirItem();
         cout << "------------------" << endl;
     }
 }
 
-void Doador::exibirPerfil() const {
+void Doador::exibirPerfil() const {                            // método que exibe as informações do perfil do doador
     cout << "===== PERFIL DO DOADOR =====\n";
     cout << "Nome: " << nome << endl;
     cout << "Email: " << email << endl;
