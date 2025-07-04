@@ -1,34 +1,34 @@
-#include <iostream>
-#include <limits>
-#include <string>
-#include "Doador.h"
-#include "Ong.h"
-#include "Item.h"
-#include "sistema.h"
+#include <iostream>                  // Entrada e saída padrão
+#include <limits>                   // Para usar limites numéricos, útil ao limpar buffer
+#include <string>                   // Para manipular strings
+#include "Doador.h"                 // Inclusão da classe Doador
+#include "Ong.h"                    // Inclusão da classe Ong
+#include "Item.h"                   // Inclusão da classe Item
+#include "sistema.h"                // Inclusão da classe principal do sistema
 
-#ifdef _WIN32
+#ifdef _WIN32                       // Verifica se o sistema é Windows
 #include <cstdlib>
-#define CLEAR_SCREEN "cls"
+#define CLEAR_SCREEN "cls"          // Comando para limpar tela no Windows
 #else
-#define CLEAR_SCREEN "clear"
+#define CLEAR_SCREEN "clear"        // Comando para limpar tela no Linux/Mac
 #endif
 
 using namespace std;
 
-// Limpa a tela
+// Função que limpa a tela do terminal
 void limparTela() {
-    system(CLEAR_SCREEN);
+    system(CLEAR_SCREEN);          // Executa o comando apropriado
 }
 
-// Aguarda Enter
+// Função que pausa o programa até o usuário apertar Enter
 void pausar() {
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.clear();                                       // Limpa possíveis flags de erro
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignora qualquer entrada anterior
     cout << "\nPressione Enter para continuar...";
-    cin.get();
+    cin.get();                                         // Aguarda o Enter
 }
 
-// Valida número
+// Função genérica para ler um número inteiro com validação
 bool validarEntradaNumerica(int& valor, const string& mensagem) {
     cout << mensagem;
     while (!(cin >> valor)) {
@@ -36,11 +36,11 @@ bool validarEntradaNumerica(int& valor, const string& mensagem) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpa buffer após número
     return true;
 }
 
-// Menu principal
+// Exibe o menu principal do sistema com todas as opções
 void exibirMenuPrincipal() {
     limparTela();
     cout << "==============================================================\n";
@@ -59,7 +59,7 @@ void exibirMenuPrincipal() {
     cout << "Escolha uma opcao: ";
 }
 
-// Submenu de cadastro
+// Submenu que pergunta se o usuário deseja cadastrar como Doador ou ONG
 void exibirSubmenuCadastro() {
     limparTela();
     cout << "==============================================================\n";
@@ -72,24 +72,27 @@ void exibirSubmenuCadastro() {
     cout << "Escolha uma opcao: ";
 }
 
+// Função principal que executa o loop do programa
 int main() {
-    Sistema* sis = Sistema::getInstancia();
-    int opc = -1;
+    Sistema* sis = Sistema::getInstancia();   // Obtém instância única do sistema (singleton)
+    int opc = -1;                             // Armazena a opção do usuário
 
+    // Loop principal do menu
     while (true) {
-        exibirMenuPrincipal();
+        exibirMenuPrincipal();                // Exibe o menu
         if (!validarEntradaNumerica(opc, "")) continue;
 
         switch (opc) {
             case 1: {
+                // Cadastro de usuário
                 int tipoUsuario;
-                exibirSubmenuCadastro();
+                exibirSubmenuCadastro();                  // Pergunta se é doador ou ONG
                 if (!validarEntradaNumerica(tipoUsuario, "")) continue;
 
                 if (tipoUsuario == 1 || tipoUsuario == 2) {
-                    sis->cadastrarUsuario(tipoUsuario);
+                    sis->cadastrarUsuario(tipoUsuario);  // Cadastra de acordo com o tipo
                 } else if (tipoUsuario == 0) {
-                    continue;
+                    continue;                            // Volta ao menu principal
                 } else {
                     cout << "Opção invalida. Tente novamente.\n";
                 }
@@ -97,6 +100,7 @@ int main() {
                 break;
             }
             case 2: {
+                // Login
                 if (sis->login()) {
                     cout << "Login bem-sucedido!\n";
                 } else {
@@ -106,36 +110,43 @@ int main() {
                 break;
             }
             case 3: {
+                // Doação de item
                 sis->doarItem();
                 pausar();
                 break;
             }
             case 4: {
+                // Solicitação de item pela ONG
                 sis->solicitarItem();
                 pausar();
                 break;
             }
             case 5: {
+                // Confirmação de entrega
                 sis->confirmarEntrega();
                 pausar();
                 break;
             }
             case 6: {
+                // Lista todos os usuários (doadores e ONGs)
                 sis->listarUsuariosSalvos();
                 pausar();
                 break;
             }
             case 7: {
+                // Lista todos os itens (doações registradas)
                 sis->listarItensSalvos();
                 pausar();
                 break;
             }
             case 0: {
+                // Encerra o sistema
                 limparTela();
                 cout << "Obrigado por usar o Doe Facil! Ate logo!\n";
                 return 0;
             }
             default: {
+                // Tratamento de erro para opção inválida
                 cout << "Opção invalida. Por favor, escolha uma opção valida.\n";
                 pausar();
             }

@@ -1,4 +1,3 @@
-// inclui headers com definições de classes e declarações necessárias
 #include "sistema.h"
 #include "Doador.h"
 #include "Ong.h"
@@ -76,7 +75,7 @@ void Sistema::cadastrarUsuario(int tipo) {      // método para cadastrar usuár
         return;
     }
 
-    if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {                        // executa o SQL para salvar no banco
+    if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {  // executa o SQL para salvar no banco
         cerr << "Erro ao inserir usuario: " << errMsg << endl;
         sqlite3_free(errMsg);
     } else {
@@ -193,7 +192,7 @@ void Sistema::confirmarEntrega() {                     // método para confirmar
     }
 }
 
-// ========== NOVOS MÉTODOS AUXILIARES DO MENU ==========
+//NOVOS MÉTODOS AUXILIARES DO MENU 
 void Sistema::listarUsuariosSalvos() {                                 // método para listar todos os usuários salvos no banco
     cout << "\n--- DOADORES ---\n";
     sqlite3_stmt* stmt;
