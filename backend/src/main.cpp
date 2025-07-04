@@ -5,12 +5,12 @@
 #include "Ong.h"                    // Inclusão da classe Ong
 #include "Item.h"                   // Inclusão da classe Item
 #include "sistema.h"                // Inclusão da classe principal do sistema
+#include <cstdlib>
+
 
 #ifdef _WIN32                       // Verifica se o sistema é Windows
-#include <cstdlib>
 #define CLEAR_SCREEN "cls"          // Comando para limpar tela no Windows
 #else
-#define CLEAR_SCREEN "clear"        // Comando para limpar tela no Linux/Mac
 #endif
 
 using namespace std;
