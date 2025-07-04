@@ -106,10 +106,9 @@ Terminal ou IDE (Visual Studio Code, CLion, etc.)
 
 
 🚀 Passos
+
 Clone o repositório:
 
-
-CopiarEditar
 git clone https://github.com/guilhermebs7/doacoes-ongs.git
 
 Navegue até a pasta do projeto:
@@ -120,20 +119,15 @@ cd doacoes-ongs
 
 Compile o projeto:
 
-
-CopiarEditar
 g++ -o doacoes main.cpp sistema.cpp Ong.cpp sqlite3.c
 
 Execute o sistema:
 
-
-CopiarEditar
 ./doacoes
 
 Ou, caso esteja no Windows:
-CopiarEditar
-DoeFácil2.exe
 
+DoeFácil2.exe
 
 🎓 Créditos e Autoria
 Nome ; GitHub
