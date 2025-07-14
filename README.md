@@ -117,7 +117,8 @@ cd doacoes-ongs
 
 Compile o projeto:
 
-g++ -o doacoes main.cpp sistema.cpp Ong.cpp sqlite3.c
+gcc -c sqlite3.c -o sqlite3.o
+g++ main.cpp sistema.cpp Doador.cpp Ong.cpp Usuario.cpp Item.cpp sqlite3.o -o sistema.exe
 
 Execute o sistema:
 
