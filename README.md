@@ -2,7 +2,7 @@
 ## Sistema de Gerenciamento de Doações para ONGs
 
 Projeto desenvolvido na disciplina de **Estrutura de Dados Orientada a Objetos** no  
-**Centro de Informática da Universidade de Pernambuco (CIn/UPE)**.
+**Centro de Informática da Universidade de Pernambuco (CIn/UFPE)**.
 
 Sistema para cadastro, gerenciamento e rastreamento de doações entre **doadores** e **ONGs**, utilizando **C++**, **POO**, **CRUD** e **SQLite**.
 
